@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rajdhani:wght@500;600;700&display=swap');
+
+:root {
+  font-family: 'Rajdhani', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #0d0f14;
+}
+
+.font-mono {
+  font-family: 'Space Mono', ui-monospace, monospace;
+}
+
+h1, h2, h3 {
+  font-family: 'Rajdhani', system-ui, sans-serif;
+}
+
+* {
+  scrollbar-color: #2a2f3a #12151c;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
