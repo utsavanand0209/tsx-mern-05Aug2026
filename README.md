@@ -2,7 +2,8 @@
 
 A React + TypeScript app that browses Star Wars characters from [SWAPI.info](https://swapi.info/api/people), with client-side pagination, species-based card coloring, hover animations, a details modal (with homeworld lookup), search, and species filtering.
 
-**Live demo:** _add your Netlify/Vercel URL here_
+**Live demo:** https://fabulous-gnome-787baa.netlify.app
+**GitHub:** https://github.com/utsavanand0209/tsx-mern-05Aug2026
 **Video walkthrough:** _add your Drive/YouTube link here_
 
 ## Features
