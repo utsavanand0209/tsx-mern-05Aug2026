@@ -11,15 +11,19 @@ import { useAuth } from './auth/AuthContext';
 
 const PAGE_SIZE = 12;
 
-export default function App() {
-  const { isAuthenticated, user, logout } = useAuth();
+/**
+ * CharacterDirectory — only mounts when the user is authenticated.
+ * Keeps all character-related hooks together so the hook count is
+ * always stable within this component.
+ */
+function CharacterDirectory() {
+  const { user, logout } = useAuth();
   const { characters, loading, error, refetch } = useCharacters();
   const [selected, setSelected] = useState<EnrichedPerson | null>(null);
   const [search, setSearch] = useState('');
   const [speciesFilter, setSpeciesFilter] = useState('');
   const [page, setPage] = useState(1);
 
-  // All hooks must be called unconditionally — guard lives in the JSX below.
   const speciesOptions = useMemo(() => {
     const set = new Set(characters.map((c) => c.speciesName));
     return Array.from(set).sort();
@@ -46,9 +50,6 @@ export default function App() {
     setSpeciesFilter(value);
     setPage(1);
   }
-
-  // Show login gate when not authenticated (after all hooks).
-  if (!isAuthenticated) return <LoginPage />;
 
   return (
     <div className="min-h-screen bg-[#0d0f14] text-[#e5e7eb]">
@@ -117,4 +118,14 @@ export default function App() {
       {selected && <CharacterModal person={selected} onClose={() => setSelected(null)} />}
     </div>
   );
+}
+
+/**
+ * App — auth gate only. Renders LoginPage or CharacterDirectory.
+ * Keeping these as separate components means each has a stable,
+ * consistent hook call count regardless of auth state changes.
+ */
+export default function App() {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <CharacterDirectory /> : <LoginPage />;
 }
