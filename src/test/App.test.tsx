@@ -1,7 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
+import { AuthContext, type AuthContextValue } from '../auth/AuthContext';
 
 const mockPeople = [
   {
@@ -50,6 +51,21 @@ const mockPlanet = {
   url: 'https://swapi.info/api/planets/1',
 };
 
+// Provide a pre-authenticated context so tests skip the login page.
+const mockAuthValue: AuthContextValue = {
+  user: { username: 'test', role: 'user' },
+  accessToken: 'mock-token',
+  isAuthenticated: true,
+  login: vi.fn(),
+  logout: vi.fn(),
+};
+
+function renderWithAuth(ui: React.ReactElement) {
+  return render(
+    <AuthContext.Provider value={mockAuthValue}>{ui}</AuthContext.Provider>,
+  );
+}
+
 beforeEach(() => {
   vi.stubGlobal(
     'fetch',
@@ -68,10 +84,14 @@ beforeEach(() => {
   );
 });
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 describe('Character modal', () => {
   it('opens with the correct person information when a card is clicked', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderWithAuth(<App />);
 
     const lukeCard = await screen.findByRole('button', { name: /luke skywalker/i });
     await user.click(lukeCard);
@@ -97,7 +117,7 @@ describe('Character modal', () => {
 
   it('opens a different character with its own details, not a stale previous one', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderWithAuth(<App />);
 
     const c3po = await screen.findByRole('button', { name: /c-3po/i });
     await user.click(c3po);

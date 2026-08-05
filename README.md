@@ -14,8 +14,8 @@ A React + TypeScript app that browses Star Wars characters from [SWAPI.info](htt
 - **Details modal** — clicking a card opens a modal with name, height (converted to meters), mass (kg), date added to the API (`dd-MM-yyyy`), number of films, and birth year. It also fetches and displays the character's homeworld (name, terrain, climate, population).
 - **Search & filter (bonus)** — search by name (partial match) and filter by species; both combine together.
 - **Integration test (bonus)** — Vitest + React Testing Library test verifying the modal opens with the correct character's data (and that switching characters doesn't leak stale data).
+- **JWT auth with silent refresh (bonus)** — mock login page (demo credentials shown on screen), access token kept in React memory (XSS-safe, 5 min TTL), refresh token in `localStorage` (1 hr TTL). A background timer silently re-issues the access token 60 s before expiry so users are never interrupted. Session is restored automatically on page reload while the refresh token is still valid.
 
-> Note: JWT auth (bonus #2) was left out to keep scope focused and ship a polished, well-tested core experience — happy to add a mocked login/silent-refresh flow if useful for the next round.
 
 ## Tech stack
 
